@@ -50,4 +50,5 @@ end
 
 group :test do
   gem "shoulda-matchers", "~> 6.4.0"
+  gem "faker", "~> 3.5.1"
 end
