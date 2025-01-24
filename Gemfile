@@ -54,3 +54,5 @@ group :test do
   gem "database_cleaner-active_record", "~> 2.2.0"
   gem "simplecov", require: false
 end
+
+gem "grape", "~> 2.2.0"
