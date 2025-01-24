@@ -8,6 +8,13 @@
 #     MovieGenre.find_or_create_by!(name: genre_name)
 #   end
 
-["Reed Greenholt", "Reyes Kerluke", "Reuben Blick", "Brice Aufderhar"].each do |name|
-  User.find_or_create_by!(name: name)
+users = [
+  { name: "Reed Greenholt", token: "qSUggxMs66kq" },
+  { name: "Reyes Kerluke", token: "5YXJ3bmkRKfWC" },
+  { name: "Reuben Blick", token: "cfiQBEk1Xv0" },
+  { name: "Brice Aufderhar", token: "8jsQ1f3rm2" }
+]
+
+users.each do |user|
+  User.find_or_create_by!(name: user[:name], token: user[:token])
 end
