@@ -7,3 +7,7 @@
 #   ["Action", "Comedy", "Drama", "Horror"].each do |genre_name|
 #     MovieGenre.find_or_create_by!(name: genre_name)
 #   end
+
+["Reed Greenholt", "Reyes Kerluke", "Reuben Blick", "Brice Aufderhar"].each do |name|
+  User.find_or_create_by!(name: name)
+end
