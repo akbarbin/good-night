@@ -14,4 +14,28 @@ RSpec.describe Record, type: :model do
       expect(subject).not_to include(record_last_month)
     end
   end
+
+  describe "#calculate_duration" do
+    let(:record) { create(:record, clock_out_at: nil) }
+
+    subject { record.calculate_duration }
+
+    context "when only clocked in" do
+      it { is_expected.to be_nil }
+    end
+
+    context "when clocked in and clocked out" do
+      let(:record) { create(:clocked_in_record, clock_in_at: '2025-01-25 08:00:00', clock_out_at: '2025-01-25 08:00:10') }
+
+      it { is_expected.to eq(10) }
+    end
+  end
+
+  describe "#set_time_in_bed" do
+    let(:record) { create(:clocked_in_record, time_in_bed: nil) }
+
+    subject { record.update(clock_in_at: '2025-01-25 08:00:00', clock_out_at: '2025-01-25 08:00:10') }
+
+    it { expect { subject }.to change { record.time_in_bed }.from(nil).to(10) }
+  end
 end

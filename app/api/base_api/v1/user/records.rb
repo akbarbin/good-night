@@ -36,7 +36,7 @@ module BaseAPI
               record = current_user.records.find_by(clock_out_at: nil)
               if record
                 if record.update(clock_out_at: Time.current)
-                  { id: record.id, clock_in: record.clock_in_at, clock_out: record.clock_out_at }
+                  { id: record.id, clock_in: record.clock_in_at, clock_out: record.clock_out_at, time_in_bed: record.time_in_bed }
                 else
                   error!({ message: "Failed to clock out", errors: record.errors }, 422)
                 end

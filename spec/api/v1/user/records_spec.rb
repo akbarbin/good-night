@@ -107,6 +107,7 @@ RSpec.describe "Api::V1::User::Records", type: :request do
         json_response = JSON.parse(response.body)
         expect(json_response["id"]).not_to be_nil
         expect(json_response["clock_out"]).not_to be_nil
+        expect(json_response["time_in_bed"]).not_to be_nil
         expect(user.records.count).to eq(1)
       end
 

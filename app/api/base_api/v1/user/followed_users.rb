@@ -18,7 +18,10 @@ module BaseAPI
 
             desc "Returns a list of followed users records"
             get :records do
-              current_user.followed_users_records.from_prev_week
+              current_user
+                .followed_users_records
+                .from_prev_week
+                .order(time_in_bed: :desc)
             end
           end
         end

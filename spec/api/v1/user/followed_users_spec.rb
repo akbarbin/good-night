@@ -36,13 +36,21 @@ RSpec.describe "Api::V1::User::FollowedUsers", type: :request do
     let!(:follower) { create(:user, token: valid_token) }
     let!(:followed_user) { create(:user) }
     let!(:initiated_follow) { create(:follow, follower: follower, followed: followed_user) }
-    let!(:followed_user_records) { create_list(:record, 3, user: followed_user) }
+    let!(:followed_user_records) do
+      {
+        1 => create(:record, user: followed_user, time_in_bed: 1000),
+        2 => create(:record, user: followed_user, time_in_bed: 28800),
+        3 => create(:record, user: followed_user, time_in_bed: 1500)
+      }
+    end
 
     context "when a valid token is provided" do
       it "returns a list of followed users records" do
         subject
         expect(response).to have_http_status(:ok)
         json_response = JSON.parse(response.body)
+        expect(json_response[0]["id"]).to eq(followed_user_records[2].id)
+        expect(json_response[0]["time_in_bed"]).to eq(28800)
         expect(json_response.size).to eq(3)
       end
     end
