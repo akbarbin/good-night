@@ -18,7 +18,7 @@ module BaseAPI
 
             desc "Returns a list of followed users records"
             get :records do
-              current_user.followed_users_records
+              current_user.followed_users_records.from_prev_week
             end
           end
         end
