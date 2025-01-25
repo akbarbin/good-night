@@ -4,4 +4,9 @@ FactoryBot.define do
     clock_out_at { "2025-01-24 14:10:14" }
     user
   end
+
+  factory :clocked_in_record, class: Record do
+    clock_in_at { "2025-01-24 14:10:14" }
+    user
+  end
 end
