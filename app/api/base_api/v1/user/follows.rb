@@ -28,6 +28,19 @@ module BaseAPI
                 error!({ message: "Failed to follow user", errors: initiated_follow.errors }, 422)
               end
             end
+
+            desc "Unfollow a user"
+            params do
+              requires :id, type: Integer, desc: "User ID"
+            end
+            delete ":id" do
+              initiated_follow = current_user.initiated_follows.find_by(followed_id: params[:id])
+              if initiated_follow.destroy
+                status(:no_content)
+              else
+                error!({ message: "Failed to unfollow user", errors: initiated_follow.errors }, 422)
+              end
+            end
           end
         end
       end
