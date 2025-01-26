@@ -2,6 +2,8 @@ module BaseAPI
   module V1
     module User
       class Records < Grape::API
+        helpers APIHelper
+
         helpers do
           def current_user
             @current_user ||= ::User.find_by(token: headers["Authorization"])
@@ -17,8 +19,16 @@ module BaseAPI
             before { authenticate! }
 
             desc "Get user records"
+            params do
+              optional :page, type: Integer, default: 1
+              optional :items, type: Integer, default: 10
+            end
             get do
-              current_user.records.order(:created_at)
+              pagy, records = pagy(current_user.records.order(:created_at), page: params[:page], items: params[:items])
+              {
+                records: records,
+                metadata: pagy_metadata(pagy)
+              }
             end
 
             desc "Add clock in record"

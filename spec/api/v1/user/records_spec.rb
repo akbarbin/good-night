@@ -30,9 +30,9 @@ RSpec.describe "Api::V1::User::Records", type: :request do
   end
 
   describe "GET /api/v1/user/records" do
-    subject(:records_request) { get "/api/v1/user/records", headers: headers }
+    subject(:records_request) { get "/api/v1/user/records", headers: headers, params: { page: 1, items: 20 } }
 
-    let!(:user) { create(:user_with_records, records_count: 5, token: valid_token) }
+    let!(:user) { create(:user_with_records, records_count: 50, token: valid_token) }
 
     before { subject }
 
@@ -40,8 +40,8 @@ RSpec.describe "Api::V1::User::Records", type: :request do
       it "returns a list of records ordered by created time" do
         expect(response).to have_http_status(:ok)
         json_response = JSON.parse(response.body)
-        expect(json_response.size).to eq(5)
-        expect(json_response[0]["id"]).to eq(user.records.first.id)
+        expect(json_response["records"].size).to eq(20)
+        expect(json_response["records"][0]["id"]).to eq(user.records.first.id)
       end
 
       context "when user has no records" do
@@ -50,7 +50,7 @@ RSpec.describe "Api::V1::User::Records", type: :request do
         it "returns an empty list" do
           expect(response).to have_http_status(:ok)
           json_response = JSON.parse(response.body)
-          expect(json_response.size).to eq(0)
+          expect(json_response["records"].size).to eq(0)
         end
       end
     end
