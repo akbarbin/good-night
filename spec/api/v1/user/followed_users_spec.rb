@@ -31,7 +31,7 @@ RSpec.describe "Api::V1::User::FollowedUsers", type: :request do
   end
 
   describe "GET /api/v1/user/followed_users/records" do
-    subject(:follows_request) { get "/api/v1/user/followed_users/records", headers: headers }
+    subject(:follows_request) { get "/api/v1/user/followed_users/records", headers: headers, params: { page: 1, items: 20 } }
 
     let!(:follower) { create(:user, token: valid_token) }
     let!(:followed_user) { create(:user) }
@@ -43,15 +43,16 @@ RSpec.describe "Api::V1::User::FollowedUsers", type: :request do
         3 => create(:record, user: followed_user, time_in_bed: 1500)
       }
     end
+    let!(:another_followed_user_records) { create_list(:record, 20, user: followed_user, time_in_bed: 1000) }
 
     context "when a valid token is provided" do
       it "returns a list of followed users records" do
         subject
         expect(response).to have_http_status(:ok)
         json_response = JSON.parse(response.body)
-        expect(json_response[0]["id"]).to eq(followed_user_records[2].id)
-        expect(json_response[0]["time_in_bed"]).to eq(28800)
-        expect(json_response.size).to eq(3)
+        expect(json_response["records"][0]["id"]).to eq(followed_user_records[2].id)
+        expect(json_response["records"][0]["time_in_bed"]).to eq(28800)
+        expect(json_response["records"].size).to eq(20)
       end
     end
 
