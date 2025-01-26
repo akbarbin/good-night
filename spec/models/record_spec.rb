@@ -16,7 +16,7 @@ RSpec.describe Record, type: :model do
   end
 
   describe "#calculate_duration" do
-    let(:record) { create(:record, clock_out_at: nil) }
+    let(:record) { create(:record, clocked_out_at: nil) }
 
     subject { record.calculate_duration }
 
@@ -25,7 +25,7 @@ RSpec.describe Record, type: :model do
     end
 
     context "when clocked in and clocked out" do
-      let(:record) { create(:clocked_in_record, clock_in_at: '2025-01-25 08:00:00', clock_out_at: '2025-01-25 08:00:10') }
+      let(:record) { create(:clocked_in_record, clocked_in_at: '2025-01-25 08:00:00', clocked_out_at: '2025-01-25 08:00:10') }
 
       it { is_expected.to eq(10) }
     end
@@ -34,7 +34,7 @@ RSpec.describe Record, type: :model do
   describe "#set_time_in_bed" do
     let(:record) { create(:clocked_in_record, time_in_bed: nil) }
 
-    subject { record.update(clock_in_at: '2025-01-25 08:00:00', clock_out_at: '2025-01-25 08:00:10') }
+    subject { record.update(clocked_in_at: '2025-01-25 08:00:00', clocked_out_at: '2025-01-25 08:00:10') }
 
     it { expect { subject }.to change { record.time_in_bed }.from(nil).to(10) }
   end

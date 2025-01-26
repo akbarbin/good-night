@@ -71,12 +71,12 @@ RSpec.describe "Api::V1::User::Records", type: :request do
         expect(response).to have_http_status(:created)
         json_response = JSON.parse(response.body)
         expect(json_response["id"]).not_to be_nil
-        expect(json_response["clock_in"]).not_to be_nil
+        expect(json_response["clocked_in_at"]).not_to be_nil
         expect(user.records.count).to eq(1)
       end
 
       context "when previous clock in record is not closed yet" do
-        let!(:record) { create(:record, clock_out_at: nil, user: user) }
+        let!(:record) { create(:record, clocked_out_at: nil, user: user) }
 
         it "returns a 422 error with error message" do
           subject
@@ -128,13 +128,13 @@ RSpec.describe "Api::V1::User::Records", type: :request do
         expect(response).to have_http_status(:created)
         json_response = JSON.parse(response.body)
         expect(json_response["id"]).not_to be_nil
-        expect(json_response["clock_out"]).not_to be_nil
+        expect(json_response["clocked_out_at"]).not_to be_nil
         expect(json_response["time_in_bed"]).not_to be_nil
         expect(user.records.count).to eq(1)
       end
 
       context "when previous clock in record is not found" do
-        let!(:record) { create(:record, clock_in_at: nil, user: user) }
+        let!(:record) { create(:record, clocked_in_at: nil, user: user) }
 
         it "returns a 422 error with error message" do
           expect(response).to have_http_status(:not_found)

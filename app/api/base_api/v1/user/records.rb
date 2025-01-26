@@ -6,7 +6,7 @@ module BaseAPI
 
         helpers do
           def validate_active_clocked_in_record
-            return error!({ message: "Active clock in record exists" }, 422) if current_user.records.exists?(clock_out_at: nil)
+            return error!({ message: "Active clock in record exists" }, 422) if current_user.records.exists?(clocked_out_at: nil)
           end
         end
 
@@ -29,9 +29,9 @@ module BaseAPI
             post :clock_in do
               validate_active_clocked_in_record
 
-              record = current_user.records.new(clock_in_at: Time.current)
+              record = current_user.records.new(clocked_in_at: Time.current)
               if record.save
-                { id: record.id, clock_in: record.clock_in_at }
+                { id: record.id, clocked_in_at: record.clocked_in_at }
               else
                 error!({ message: "Failed to clock in", errors: record.errors }, 422)
               end
@@ -39,10 +39,10 @@ module BaseAPI
 
             desc "Save clock out in previous clock-in record"
             post :clock_out do
-              record = current_user.records.find_by(clock_out_at: nil)
+              record = current_user.records.find_by(clocked_out_at: nil)
               if record
-                if record.update(clock_out_at: Time.current)
-                  { id: record.id, clock_in: record.clock_in_at, clock_out: record.clock_out_at, time_in_bed: record.time_in_bed }
+                if record.update(clocked_out_at: Time.current)
+                  { id: record.id, clocked_in_at: record.clocked_in_at, clocked_out_at: record.clocked_out_at, time_in_bed: record.time_in_bed }
                 else
                   error!({ message: "Failed to clock out", errors: record.errors }, 422)
                 end
