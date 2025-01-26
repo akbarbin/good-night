@@ -384,6 +384,7 @@ DEPENDENCIES
   rack-cors
   rails (~> 8.0.1)
   rspec-rails (~> 7.0.0)
+  rubocop
   rubocop-rails-omakase
   shoulda-matchers (~> 6.4.0)
   simplecov

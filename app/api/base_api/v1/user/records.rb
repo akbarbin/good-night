@@ -6,7 +6,7 @@ module BaseAPI
 
         helpers do
           def validate_active_clocked_in_record
-            return error!({ message: "Active clock in record exists" }, 422) if current_user.records.exists?(clocked_out_at: nil)
+            error!({ message: "Active clock in record exists" }, 422) if current_user.records.exists?(clocked_out_at: nil)
           end
         end
 

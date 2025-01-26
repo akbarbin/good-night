@@ -60,3 +60,4 @@ end
 gem "grape", "~> 2.2.0"
 gem "pagy", "~> 9.3"
 gem "rack-cors"
+gem "rubocop", require: false

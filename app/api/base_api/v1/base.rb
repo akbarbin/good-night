@@ -11,7 +11,7 @@ module BaseAPI
         end
       end
 
-      version 'v1', using: :path
+      version "v1", using: :path
 
       before { authenticate! }
       mount BaseAPI::V1::User::FollowedUsers
