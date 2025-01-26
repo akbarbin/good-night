@@ -56,3 +56,4 @@ group :test do
 end
 
 gem "grape", "~> 2.2.0"
+gem "pagy", "~> 9.3"
