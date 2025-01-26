@@ -4,6 +4,12 @@ module BaseAPI
       class Records < Grape::API
         helpers APIHelper
 
+        helpers do
+          def validate_active_clocked_in_record
+            return error!({ message: "Active clock in record exists" }, 422) if current_user.records.exists?(clock_out_at: nil)
+          end
+        end
+
         namespace :user do
           resource :records do
             desc "Get user records"
@@ -21,6 +27,8 @@ module BaseAPI
 
             desc "Add clock in record"
             post :clock_in do
+              validate_active_clocked_in_record
+
               record = current_user.records.new(clock_in_at: Time.current)
               if record.save
                 { id: record.id, clock_in: record.clock_in_at }
