@@ -4,20 +4,8 @@ module BaseAPI
       class Records < Grape::API
         helpers APIHelper
 
-        helpers do
-          def current_user
-            @current_user ||= ::User.find_by(token: headers["Authorization"])
-          end
-
-          def authenticate!
-            error!({ message: "Unauthorized or user not found" }, 401) unless current_user
-          end
-        end
-
         namespace :user do
           resource :records do
-            before { authenticate! }
-
             desc "Get user records"
             params do
               optional :page, type: Integer, default: 1

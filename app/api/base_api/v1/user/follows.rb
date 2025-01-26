@@ -2,20 +2,8 @@ module BaseAPI
   module V1
     module User
       class Follows < Grape::API
-        helpers do
-          def current_user
-            @current_user ||= ::User.find_by(token: headers["Authorization"])
-          end
-
-          def authenticate!
-            error!({ message: "Unauthorized or user not found" }, 401) unless current_user
-          end
-        end
-
         namespace :user do
           resource :follows do
-            before { authenticate! }
-
             desc "Follow a user"
             params do
               requires :id, type: Integer, desc: "User ID"
